@@ -34,4 +34,4 @@ cd Dev-Detective
 # open in browser
 start index.html   # or double-click
 run : 
-
+https://dev-detective-lyart.vercel.app/
