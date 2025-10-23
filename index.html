@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title style="color: aqua; font-size: initial;">DevDetective</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Project CSS -->
+    <link rel="stylesheet" href="style.css" />
+    <link rel="manifest" href="manifest.json">
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').then(() => console.log('SW registered'));
+            });
+        }
+    </script>
+
+</head>
+<body>
+<div id="loader">
+    <div class="loader-content">
+        <img src="images/logo.png" alt="logo" class="spin" />
+        <p>Loading DevDetective...</p>
+    </div>
+</div>
+
+<div class="app">
+    <header>
+        <div class="titleBlock">
+            <h1 style=" width: 100%; margin-top: 15px; margin-left: 10px;height: 50px; background-color: chartreuse;
+             position: relative; font-size: large;"><strong>Dev Detective</strong></h1>
+            <p class="subtitle">GitHub profile inspector • mini-portfolio • analytics</p>
+        </div>
+        <div class="controls">
+            <input id="usernameInput" type="text" placeholder="Enter GitHub username..." autocomplete="off" />
+            <button id="searchBtn">Search</button>
+            <button id="compareToggle">Compare</button>
+            <button id="voiceBtn" title="Voice Search">🎙️</button>
+        </div>
+    </header>
+
+    <main class="grid">
+        <!-- LEFT: profile, actions, history -->
+        <aside class="card leftCard">
+            <div class="profileTop">
+                <div class="avatar" id="avatarWrap"><img id="avatarImg" src="" alt="avatar" /></div>
+                <div class="profileMeta">
+                    <div id="fullName" class="fullname">—</div>
+                    <a id="userLink" href="#" target="_blank" rel="noopener noreferrer" class="username">@username</a>
+                    <div id="joined" class="small muted">Joined —</div>
+                </div>
+                <div class="badgeWrap">
+                    <div id="mainBadge" class="badge">—</div>
+                    <div class="small muted">Last seen: <span id="lastSeen">—</span></div>
+                </div>
+            </div>
+
+            <p id="bio" class="bio muted">Profile bio will appear here.</p>
+
+            <div class="statsRow">
+                <div class="stat"><div class="small muted">Repos</div><div id="statRepos" class="big">0</div></div>
+                <div class="stat"><div class="small muted">Followers</div><div id="statFollowers" class="big">0</div></div>
+                <div class="stat"><div class="small muted">Following</div><div id="statFollowing" class="big">0</div></div>
+            </div>
+
+            <div class="actions">
+                <button id="pinBtn">📌 Pin</button>
+                <button id="downloadJsonBtn">⬇️ JSON</button>
+                <button id="exportCardBtn">🖼️ Dev Card</button>
+                <button id="resumeBtn">📄 Resume</button>
+                <button id="openReposBtn">Repos</button>
+            </div>
+
+            <div class="section">
+                <div class="sectionTitle small muted" style="color: aqua; font-size: initial;"><b>Top languages</b></div>
+                <div id="languages" class="langWrap"></div>
+            </div>
+
+            <div class="section">
+                <div class="sectionTitle small muted" style="color: aqua; font-size: initial;"><strong>Recent repos</strong></div>
+                <div id="reposList" class="repos-list"></div>
+            </div>
+
+            <div class="section">
+                <div class="sectionTitle small muted" style="color: aqua; font-size: initial;"><b>Search history</b></div>
+                <div id="history" class="history"></div>
+            </div>
+        </aside>
+
+        <!-- RIGHT: analytics, map, timeline -->
+        <section class="rightColumn">
+            <div class="card">
+                <div class="cardHeader">
+                    <div>
+                        <div class="small muted">Profile Insights</div>
+                        <div id="insightSummary" class="insightTitle">No profile selected</div>
+                    </div>
+                    <div class="typing"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+                </div>
+
+                <div class="analyticsGrid">
+                    <div class="analytic highlight"><div class="small muted">Avg Stars</div><div id="avgStars" class="big">—</div></div>
+                    <div class="analytic highlight"><div class="small muted">Most Starred Repo</div><div id="topRepo" class="big">—</div></div>
+                    <div class="analytic highlight"><div class="small muted">Dev Score</div><div id="devScore" class="big">—</div></div>
+                    <div class="analytic highlight"><div class="small muted">Activity (14d)</div><div id="streak" class="big">—</div></div>
+                </div>
+
+                <div class="chartRow">
+                    <div class="chartWrap"><canvas id="langChart"></canvas></div>
+                    <div class="mapWrap">
+                        <div class="small muted">Location</div>
+                        <div id="map" class="map"></div>
+                    </div>
+                </div>
+
+                <div class="cardFooter">
+                    <div class="footerButtons">
+                        <button id="compareOpenBtn">Open Comparison</button>
+                        <button id="badgeBtn">Generate Badges</button>
+                        <button id="commentToggle">Comments</button>
+                        <button id="themeApplyBtn">Apply Mood Theme</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card timelineCard">
+                <div class="small muted" style="color: aqua; font-size: initial;">Activity Timeline</div>
+                <div id="timeline" class="timeline"></div>
+            </div>
+
+            <div class="card leaderboardCard">
+                <div class="small muted" style="color: aqua; font-size: initial;">Developer Leaderboard (local)</div>
+                <div id="leaderboard" class="leaderboard"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- modal -->
+    <div id="modal" class="modal"><div class="modalPanel" id="modalPanel"></div></div>
+</div>
+
+<!-- Project JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

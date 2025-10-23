@@ -1,0 +1,12 @@
+{
+  "name": "DevDetective",
+  "short_name": "DevDetective",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f6f8ff",
+  "theme_color": "#0079ff",
+  "icons": [
+    { "src": "images/favicon-16x16.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "images/favicon-32x32.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
