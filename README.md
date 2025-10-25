@@ -13,6 +13,7 @@ polished mini-projects. 🚀
 
 ## ✨ Features
 - GitHub profile & repo search  
+
 - Voice search (Speech API)  
 - Charts (Chart.js) & maps (Leaflet)  
 - Mood-based themes  
