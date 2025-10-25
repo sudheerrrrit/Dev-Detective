@@ -3,6 +3,8 @@
 Check Hare : https://dev-detective-lyart.vercel.app/
 
 
+
+
 A modern GitHub Profile Analyzer built with **HTML**, **CSS**, and **JavaScript**.  
 Includes profile search, charts, maps, voice input, comments, badges, leaderboard,  
 offline PWA support, and animated UI — perfect for learning web APIs & building  
